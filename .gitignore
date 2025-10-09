@@ -1,0 +1,29 @@
+# Environment variables and secrets
+.env
+*.env
+profiles.yml
+
+# dbt
+target/
+dbt_packages/
+logs/
+dbt_modules/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.pytest_cache/
+
+# Data files (contains potentially sensitive info)
+*.csv
+data/
+
+# OS files
+.DS_Store
+.vscode/
+.idea/
+
+# Streamlit
+.streamlit/secrets.toml
