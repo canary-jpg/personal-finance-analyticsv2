@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: stg_transactions
+    description: "Cleaned and standardized transaction data"
+    columns:
+      - name: transaction_id
+        description: "Unique identifier for each transaction"
+        tests:
+          - unique
+          - not_null
+      
+      - name: transaction_date
+        description: "Date of the transaction"
+        tests:
+          - not_null
+      
+      - name: amount
+        description: "Transaction amount"
+        tests:
+          - not_null
+      
+      - name: transaction_type
+        description: "Type of transaction: income or expense"
+        tests:
+          - accepted_values:
+              values: ['income', 'expense']
