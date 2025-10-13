@@ -2,8 +2,8 @@ name: dbt Pipeline
 
 on:
   schedule:
-    - cron: '0 6 * * *'  # Daily at 6 AM UTC
-  workflow_dispatch:  # Manual trigger
+    - cron: '0 6 * * *'
+  workflow_dispatch:
 
 jobs:
   run_dbt:
@@ -21,6 +21,11 @@ jobs:
       - name: Install dbt
         run: pip install dbt-snowflake
       
+      - name: Create profiles directory
+        run: |
+          mkdir -p ~/.dbt
+          cp personal_finance_analytics/profiles.yml ~/.dbt/profiles.yml
+      
       - name: Run dbt pipeline
         env:
           SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
@@ -31,6 +36,6 @@ jobs:
           SNOWFLAKE_DATABASE: ${{ secrets.SNOWFLAKE_DATABASE }}
         working-directory: ./personal_finance_analytics
         run: |
-          dbt deps --profiles-dir .
-          dbt run --profiles-dir .
-          dbt test --profiles-dir .
+          dbt deps
+          dbt run
+          dbt test
