@@ -20,5 +20,5 @@ SELECT
 FROM {{ source('raw', 'raw_transactions') }}
 
 {% if is_incremental() %}
-    AND date::DATE >= DATEADD(day, -7, CURRENT_DATE())
+WHERE date::DATE >= DATEADD(day, -7, CURRENT_DATE())
 {% endif %}
