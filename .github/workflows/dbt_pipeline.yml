@@ -19,7 +19,7 @@ jobs:
           python-version: '3.10'
       
       - name: Install dbt
-        run:|
+        run: |
 	   pip uninstall -y dbt-core dbt-snowflake
 	   pip install dbt-core==1.8.0 dbt-snowflake==1.8.0
       
