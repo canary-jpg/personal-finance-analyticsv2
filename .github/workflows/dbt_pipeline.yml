@@ -26,7 +26,7 @@ jobs:
       - name: Create profiles directory
         run: |
           mkdir -p ~/.dbt
-          cp personal_finance_analytics/profiles.yml ~/.dbt/profiles.yml
+          cp personal_finance_analytics/profiles_ci.yml ~/.dbt/profiles.yml
       
       - name: Run dbt pipeline
         env:
