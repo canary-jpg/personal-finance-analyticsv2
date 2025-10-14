@@ -1,7 +1,8 @@
 {{
     config(
         materialized='incremental',
-        unique_key='transaction_id'
+        unique_key='transaction_id',
+        pre_hook="USE WAREHOUSE {{ target.warehouse }}"
     )
 }}
 
