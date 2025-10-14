@@ -38,7 +38,10 @@ jobs:
           SNOWFLAKE_DATABASE: ${{ secrets.SNOWFLAKE_DATABASE }}
         working-directory: ./personal_finance_analytics
         run: |
+          echo "Warehouse: $SNOWFLAKE_WAREHOUSE"
+          echo "Database: $SNOWFLAKE_DATABASE"
           dbt --version
+          dbt debug
           dbt deps
           dbt run
           dbt test
