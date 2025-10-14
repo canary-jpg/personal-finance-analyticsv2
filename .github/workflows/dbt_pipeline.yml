@@ -20,8 +20,8 @@ jobs:
       
       - name: Install dbt
         run: |
-	   pip uninstall -y dbt-core dbt-snowflake
-	   pip install dbt-core==1.8.0 dbt-snowflake==1.8.0
+          pip uninstall -y dbt-core dbt-snowflake
+          pip install dbt-core==1.8.0 dbt-snowflake==1.8.0
       
       - name: Create profiles directory
         run: |
@@ -36,12 +36,9 @@ jobs:
           SNOWFLAKE_ROLE: ${{ secrets.SNOWFLAKE_ROLE }}
           SNOWFLAKE_WAREHOUSE: ${{ secrets.SNOWFLAKE_WAREHOUSE }}
           SNOWFLAKE_DATABASE: ${{ secrets.SNOWFLAKE_DATABASE }}
-          DBT_PROFILES_DIR: /home/runner/.dbt
         working-directory: ./personal_finance_analytics
         run: |
-          ls -la
-          cat profiles.yml
-          dbt debug
+          dbt --version
           dbt deps
           dbt run
           dbt test
