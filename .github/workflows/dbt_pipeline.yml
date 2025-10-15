@@ -43,5 +43,5 @@ jobs:
           dbt --version
           dbt debug
           dbt deps
-          dbt run
+          dbt run --full-refresh
           dbt test
