@@ -1,8 +1,7 @@
+-- Staging model for transactions
 {{
     config(
-        materialized='incremental',
-        unique_key='transaction_id',
-        pre_hook="USE WAREHOUSE \"{{ target.warehouse }}\""
+        materialized='table'
     )
 }}
 
@@ -19,7 +18,3 @@ SELECT
     END as transaction_type,
     CURRENT_TIMESTAMP() as dbt_updated_at
 FROM {{ source('raw', 'raw_transactions') }}
-
-{% if is_incremental() %}
-WHERE date::DATE >= DATEADD(day, -7, CURRENT_DATE())
-{% endif %}
