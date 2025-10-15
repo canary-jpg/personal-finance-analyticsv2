@@ -9,5 +9,6 @@ personal_finance_analytics:
       database: "{{ env_var('SNOWFLAKE_DATABASE') }}"
       warehouse: "{{ env_var('SNOWFLAKE_WAREHOUSE') }}"
       schema: PUBLIC
-      threads: 4
+      threads: 1
+      client_session_keep_alive: true
   target: prod
