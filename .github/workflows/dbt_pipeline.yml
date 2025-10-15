@@ -12,6 +12,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          clean: true
+      
+      - name: Verify checkout
+        run: |
+          cat personal_finance_analytics/models/staging/stg_transactions.sql | head -20
       
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -38,10 +44,9 @@ jobs:
           SNOWFLAKE_DATABASE: ${{ secrets.SNOWFLAKE_DATABASE }}
         working-directory: ./personal_finance_analytics
         run: |
-          echo "Warehouse: $SNOWFLAKE_WAREHOUSE"
-          echo "Database: $SNOWFLAKE_DATABASE"
           dbt --version
           dbt debug
           dbt deps
+          dbt clean
           dbt run --full-refresh
           dbt test
