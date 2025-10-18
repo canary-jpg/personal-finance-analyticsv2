@@ -16,14 +16,14 @@ This project transforms raw financial, stock portfolio, and weather data into ac
 <table>
   <tr>
     <td width="50%">
-    <img src="../images/spending_vs_expenses.png" alt="Charts" width="100%/>
-    <br/>
-    <em>Income vs Expenses and Savings Rate Trends</em>
+      <img src="images/dashboard_charts.png" alt="Charts" width="100%"/>
+      <br/>
+      <em>Income vs Expenses and Savings Rate trends</em>
     </td>
-   <td width="50%">
-    <img src="../images/portfolio_performance.png" alt="Portfolio" width="100%"/>
-    <br/>
-    <em>Portfolio performance and weather impact analysis</em>
+    <td width="50%">
+      <img src="images/dashboard_portfolio.png" alt="Portfolio" width="100%"/>
+      <br/>
+      <em>Portfolio performance and weather impact analysis</em>
     </td>
   </tr>
 </table>
