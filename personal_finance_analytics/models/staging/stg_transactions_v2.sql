@@ -1,4 +1,10 @@
 -- Staging model for transactions
+{{
+    config(
+        materialized='table'
+    )
+}}
+
 SELECT
     transaction_id,
     date::DATE as transaction_date,
