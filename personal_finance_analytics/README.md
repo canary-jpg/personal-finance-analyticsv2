@@ -16,7 +16,7 @@ This project transforms raw financial, stock portfolio, and weather data into ac
 <table>
   <tr>
     <td width="50%">
-    <img src="../images/spending_vs_expenses.png alt="Charts" width="100%/>
+    <img src="../images/spending_vs_expenses.png" alt="Charts" width="100%/>
     <br/>
     <em>Income vs Expenses and Savings Rate Trends</em>
     </td>
