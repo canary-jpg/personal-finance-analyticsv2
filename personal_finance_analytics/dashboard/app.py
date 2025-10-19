@@ -163,6 +163,108 @@ if len(portfolio_data) > 0:
         avg_gain = portfolio_data['PORTFOLIO_GAIN'].mean()
         st.metric("Avg Daily Gain", f"${avg_gain:,.2f}")
 
+# ML Predictions Section
+st.markdown("---")
+st.subheader("🔮 AI-Powered Spending Forecast")
+
+try:
+    predictions = load_data("""
+        SELECT 
+            prediction_date,
+            category,
+            predicted_amount,
+            predicted_lower,
+            predicted_upper
+        FROM ML_SPENDING_PREDICTIONS
+        ORDER BY prediction_date, category
+    """)
+    
+    # Convert date column to datetime
+    predictions['PREDICTION_DATE'] = pd.to_datetime(predictions['PREDICTION_DATE'])
+    
+    if len(predictions) > 0:
+        # Total predicted spending
+        total_next_30 = predictions.groupby('PREDICTION_DATE')['PREDICTED_AMOUNT'].sum().reset_index()
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.metric(
+                "Predicted Next 30-Day Spending",
+                f"${total_next_30['PREDICTED_AMOUNT'].sum():,.0f}",
+                help="AI forecast based on historical patterns"
+            )
+        
+        with col2:
+            avg_daily = total_next_30['PREDICTED_AMOUNT'].mean()
+            st.metric(
+                "Predicted Avg Daily Spending",
+                f"${avg_daily:,.2f}"
+            )
+        
+        # Forecast chart
+        st.subheader("📊 Spending Forecast by Category")
+        
+        # Get top 5 categories by predicted spending
+        top_categories = predictions.groupby('CATEGORY')['PREDICTED_AMOUNT'].sum().nlargest(5).index
+        forecast_subset = predictions[predictions['CATEGORY'].isin(top_categories)]
+        
+        fig = go.Figure()
+        
+        for category in top_categories:
+            cat_data = forecast_subset[forecast_subset['CATEGORY'] == category].sort_values('PREDICTION_DATE')
+            
+            # Add confidence interval (shaded area)
+            fig.add_trace(go.Scatter(
+                x=pd.concat([cat_data['PREDICTION_DATE'], cat_data['PREDICTION_DATE'][::-1]]),
+                y=pd.concat([cat_data['PREDICTED_UPPER'], cat_data['PREDICTED_LOWER'][::-1]]),
+                fill='toself',
+                fillcolor='rgba(0,0,0,0.1)',
+                line=dict(color='rgba(255,255,255,0)'),
+                showlegend=False,
+                name=f'{category} range',
+                hoverinfo='skip'
+            ))
+            
+            # Prediction line
+            fig.add_trace(go.Scatter(
+                x=cat_data['PREDICTION_DATE'],
+                y=cat_data['PREDICTED_AMOUNT'],
+                name=category,
+                mode='lines+markers',
+                line=dict(width=2)
+            ))
+        
+        fig.update_layout(
+            height=400,
+            hovermode='x unified',
+            xaxis_title='Date',
+            yaxis_title='Predicted Daily Spending ($)',
+            showlegend=True
+        )
+        
+        st.plotly_chart(fig, use_container_width=True)
+        
+        # Predictions table
+        with st.expander("📋 View Detailed Predictions"):
+            summary_by_category = predictions.groupby('CATEGORY').agg({
+                'PREDICTED_AMOUNT': 'sum',
+                'PREDICTED_LOWER': 'sum',
+                'PREDICTED_UPPER': 'sum'
+            }).reset_index()
+            summary_by_category.columns = ['Category', 'Predicted Total', 'Lower Bound', 'Upper Bound']
+            summary_by_category = summary_by_category.round(2)
+            st.dataframe(summary_by_category, use_container_width=True, hide_index=True)
+    else:
+        st.info("🤖 No predictions available. Run `python ml_models/save_predictions_to_snowflake.py` to generate forecasts.")
+        
+except Exception as e:
+    st.error(f"Error loading predictions: {e}")
+
+
+
+
+
 # Data table
 st.markdown("---")
 st.subheader("📋 Recent Daily Summary")
