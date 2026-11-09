@@ -1,5 +1,5 @@
 # Personal Finance Analytics Pipeline
-A complete analytics engineering project demonstrating modern data pipeline practice with dbt, Snowflake, and automated orchestration.
+A complete analytics engineering project demonstrating modern data pipeline practices with dbt, Snowflake, and automated orchestration.
 
 ## Project Overview
 This project transforms raw financial, stock portfolio, and weather data into actionable insights through a fully automated data pipeline.
@@ -28,6 +28,12 @@ This project transforms raw financial, stock portfolio, and weather data into ac
   </tr>
 </table>
 
+## Data Modeling & Testing
+- Staging layer: [X] models that clean and standardize the raw source
+- Marts layer: [X] models, including incremental models for transactions
+- Tests: [X] tests defined in YAML: unique, not-null, accepted values, relationships
+- Documentation: column-level descriptions in schema YAML, generated with `dbt docs`.
+
 ## Architecture
 
 - **Data Sources**: Transaction data, stock portfolio, weather data
@@ -47,7 +53,7 @@ pip install dbt-snowflake streamlit snowflake-connector-python plotly python-dot
 
 ### Generate Mock Data
 ```bash
-cd personal_finance_analysis/scripts
+cd personal_finance_analytics/scripts
 python generate_transaction_data.py
 python generate_stock_data.py
 python generate_weather_data.py
